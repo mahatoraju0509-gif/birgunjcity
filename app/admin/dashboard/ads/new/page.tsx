@@ -18,7 +18,7 @@ export default function NewAd() {
     e.preventDefault();
     setSaving(true);
     try {
-      await createAd({ title, imageUrl, linkUrl, position, active });
+      await createAd({ title, imageUrl, linkUrl, position, active, clicks: 0 });
       router.push("/admin/dashboard");
     } catch (err) {
       alert("समस्या भयो, फेरि प्रयास गर्नुहोस्।");
