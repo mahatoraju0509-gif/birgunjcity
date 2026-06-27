@@ -11,6 +11,7 @@
   isFeatured: boolean;
   views: number;
   likes: number;
+  shares: number;
   status: "draft" | "review" | "published";
   scheduledAt: number | null;
   tags: string[];

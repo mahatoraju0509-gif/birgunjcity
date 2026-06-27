@@ -38,7 +38,7 @@ export default function NewArticle() {
         title, slug: makeSlug(title), excerpt, content, category, imageUrl, videoUrl,
         author: author || "BirgunjCity Desk",
         tags,
-        isBreaking, isFeatured, views: 0, status,
+        isBreaking, isFeatured, views: 0, likes: 0, shares: 0, status,
         scheduledAt: scheduledAt ? new Date(scheduledAt).getTime() : null,
       });
       router.push("/admin/dashboard");

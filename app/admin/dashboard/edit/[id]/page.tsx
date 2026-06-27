@@ -1,13 +1,16 @@
 ﻿"use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { createArticle } from "@/lib/articles";
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { getArticleById, updateArticle } from "@/lib/articles";
 import { CATEGORIES, ArticleCategory } from "@/types/article";
 import RichTextEditor from "@/components/RichTextEditor";
 
-export default function NewArticle() {
+export default function EditArticle() {
   const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
+
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
@@ -18,31 +21,45 @@ export default function NewArticle() {
   const [tagsInput, setTagsInput] = useState("");
   const [isBreaking, setIsBreaking] = useState(false);
   const [isFeatured, setIsFeatured] = useState(false);
-  const [status, setStatus] = useState<"draft" | "published">("published");
+  const [status, setStatus] = useState<"draft" | "review" | "published">("published");
   const [scheduledAt, setScheduledAt] = useState("");
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  function makeSlug(text: string) {
-    return (
-      text.toLowerCase().trim().replace(/[^a-z0-9\u0900-\u097F]+/g, "-").replace(/^-+|-+$/g, "") +
-      "-" + Date.now()
-    );
-  }
+  useEffect(() => {
+    async function load() {
+      const article = await getArticleById(id);
+      if (article) {
+        setTitle(article.title);
+        setExcerpt(article.excerpt);
+        setContent(article.content);
+        setCategory(article.category);
+        setImageUrl(article.imageUrl);
+        setVideoUrl(article.videoUrl || "");
+        setAuthor(article.author);
+        setTagsInput((article.tags || []).join(", "));
+        setIsBreaking(article.isBreaking);
+        setIsFeatured(article.isFeatured);
+        setStatus(article.status);
+        if (article.scheduledAt) {
+          const d = new Date(article.scheduledAt);
+          setScheduledAt(d.toISOString().slice(0, 16));
+        }
+      }
+      setLoading(false);
+    }
+    load();
+  }, [id]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
     try {
-      const tags = tagsInput
-        .split(",")
-        .map((t) => t.trim())
-        .filter((t) => t.length > 0);
-
-      await createArticle({
-        title, slug: makeSlug(title), excerpt, content, category, imageUrl,
-        author: author || "BirgunjCity Desk",
-        tags,
-        isBreaking, isFeatured, views: 0, status,
+      const tags = tagsInput.split(",").map((t) => t.trim()).filter((t) => t.length > 0);
+      await updateArticle(id, {
+        title, excerpt, content, category, imageUrl, videoUrl, author, tags,
+        isBreaking, isFeatured, status,
+        scheduledAt: scheduledAt ? new Date(scheduledAt).getTime() : null,
       });
       router.push("/admin/dashboard");
     } catch (err) {
@@ -53,12 +70,13 @@ export default function NewArticle() {
     }
   }
 
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-brand-navy text-white px-6 py-4">
-        <h1 className="text-lg font-bold">नयाँ समाचार थप्नुहोस्</h1>
+        <h1 className="text-lg font-bold">समाचार सम्पादन गर्नुहोस्</h1>
       </div>
-
       <form onSubmit={handleSubmit} className="max-w-2xl mx-auto px-4 py-6 bg-white rounded-lg shadow my-6 space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1">शीर्षक (Title)</label>
@@ -74,8 +92,11 @@ export default function NewArticle() {
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">फोटो URL</label>
-          <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://i.ibb.co/xxxx/photo.jpg" className="w-full border rounded-lg px-3 py-2" />
-          <p className="text-xs text-gray-500 mt-1">ImgBB मा "Direct link" प्रयोग गर्नुहोस्, BBCode होइन।</p>
+          <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className="w-full border rounded-lg px-3 py-2" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">YouTube Video URL (वैकल्पिक)</label>
+          <input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://www.youtube.com/watch?v=xxxxx" className="w-full border rounded-lg px-3 py-2" />
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">Tags (अल्पविरामले छुट्टाउनुहोस्)</label>
@@ -90,7 +111,7 @@ export default function NewArticle() {
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">लेखक</label>
-            <input value={author} onChange={(e) => setAuthor(e.target.value)} placeholder="BirgunjCity Desk" className="w-full border rounded-lg px-3 py-2" />
+            <input value={author} onChange={(e) => setAuthor(e.target.value)} className="w-full border rounded-lg px-3 py-2" />
           </div>
         </div>
         <div className="flex gap-6">
@@ -105,13 +126,18 @@ export default function NewArticle() {
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">Status</label>
-          <select value={status} onChange={(e) => setStatus(e.target.value as "draft" | "published")} className="w-full border rounded-lg px-3 py-2">
-            <option value="published">Published (सार्वजनिक)</option>
+          <select value={status} onChange={(e) => setStatus(e.target.value as "draft" | "review" | "published")} className="w-full border rounded-lg px-3 py-2">
             <option value="draft">Draft (अहिले नहोस्)</option>
+            <option value="review">Review मा पठाउनुहोस् (Editor लाई)</option>
+            <option value="published">Published (सार्वजनिक) — Editor मात्र</option>
           </select>
         </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Schedule (वैकल्पिक)</label>
+          <input type="datetime-local" value={scheduledAt} onChange={(e) => setScheduledAt(e.target.value)} className="w-full border rounded-lg px-3 py-2" />
+        </div>
         <button type="submit" disabled={saving} className="w-full bg-brand-gold text-white font-semibold py-3 rounded-lg hover:opacity-90 disabled:opacity-50">
-          {saving ? "सेभ हुँदैछ..." : "समाचार प्रकाशित गर्नुहोस्"}
+          {saving ? "सेभ हुँदैछ..." : "परिवर्तन सेभ गर्नुहोस्"}
         </button>
       </form>
     </div>
