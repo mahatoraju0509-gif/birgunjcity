@@ -1,6 +1,7 @@
 ﻿import Link from "next/link";
 import { CATEGORIES } from "@/types/article";
 import DarkModeToggle from "@/components/DarkModeToggle";
+import { siteConfig } from "@/lib/siteConfig";
 
 export default function Header() {
   return (
@@ -10,8 +11,8 @@ export default function Header() {
           {new Date().toLocaleDateString("ne-NP", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
         </span>
         <div className="flex items-center gap-4 whitespace-nowrap">
-          <span>बीरगंज, नेपाल</span>
-          <a href="https://wa.me/8109036694264" target="_blank" rel="noopener noreferrer" className="hover:text-brand-gold">
+          <span>{siteConfig.location}</span>
+          <a href={"https://wa.me/" + siteConfig.contact.whatsapp} target="_blank" rel="noopener noreferrer" className="hover:text-brand-gold">
             समाचार पठाउनुहोस्
           </a>
         </div>
@@ -21,7 +22,7 @@ export default function Header() {
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <span className="text-2xl md:text-3xl font-extrabold tracking-tight">
-              <span className="logo-shine animate-slide-left inline-block">BIRGUNJ</span><span className="text-brand-gold animate-slide-right inline-block">CITY</span>
+              <span className="logo-shine animate-slide-left inline-block">{siteConfig.siteName}</span>
               <span className="text-sm font-normal align-top text-white">.com</span>
             </span>
           </Link>
