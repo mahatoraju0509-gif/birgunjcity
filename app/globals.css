@@ -135,3 +135,50 @@ body {
   -webkit-text-fill-color: transparent;
   animation: logoShine 4s ease-in-out infinite;
 }
+@keyframes titleSlideIn {
+  0% { opacity: 0; transform: translateX(-12px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+.animate-title-in {
+  animation: titleSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes colorCycle {
+  0%, 100% { color: #14365a; }
+  50% { color: #d4a017; }
+}
+.animate-color-pulse {
+  animation: colorCycle 3s ease-in-out infinite;
+}
+
+@keyframes underlineGrow {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+.animate-underline {
+  position: relative;
+  display: inline-block;
+}
+.animate-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 3px;
+  background: linear-gradient(90deg, #d4a017, transparent);
+  animation: underlineGrow 0.6s ease-out forwards;
+}
+@keyframes slideInLeft {
+  0% { opacity: 0; transform: translateX(-40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInRight {
+  0% { opacity: 0; transform: translateX(40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-left {
+  animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-slide-right {
+  animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}

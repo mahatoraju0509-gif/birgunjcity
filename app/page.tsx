@@ -62,7 +62,7 @@ export default async function Home() {
         <div className="lg:col-span-3">
           {featured.length > 0 && (
             <section className="mb-10">
-              <h2 className="text-xl font-bold text-brand-navy border-b-2 border-brand-gold inline-block pb-1 mb-4">
+              <h2 className="text-xl font-bold text-brand-navy inline-block pb-1 mb-4 animate-title-in animate-underline">
                 प्रमुख समाचार
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

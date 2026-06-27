@@ -5,6 +5,21 @@ import ArticleGrid from "@/components/ArticleGrid";
 
 export const revalidate = 30;
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const cat = CATEGORIES.find((c) => c.id === id);
+  if (!cat) return {};
+  return {
+    title: cat.name + " समाचार — BirgunjCity.com",
+    description: "बीरगंज र मध्धेश प्रदेशका " + cat.name + " सम्बन्धी ताजा समाचार, अपडेट र विश्लेषण।",
+    openGraph: {
+      title: cat.name + " समाचार — BirgunjCity.com",
+      description: "बीरगंज र मध्धेश प्रदेशका " + cat.name + " सम्बन्धी ताजा समाचार।",
+      type: "website",
+    },
+  };
+}
+
 export default async function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const cat = CATEGORIES.find((c) => c.id === id);

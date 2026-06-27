@@ -8,7 +8,9 @@ export const metadata: Metadata = {
   title: "BirgunjCity.com — बीरगंज र मध्धेश प्रदेशको ताजा समाचार",
   description:
     "बीरगंज, मध्धेश प्रदेश र नेपालभरका ताजा समाचार, राजनीति, खेलकुद, प्रविधि, मनोरञ्जन, अर्थ/बजार र स्वास्थ्य सम्बन्धी अपडेट।",
-  authors: [{ name: "Raju Mahato", url: "https://rajumahato.it.com" }],
+  authors: [{ name: "Raju Mahato - Nepal's Best Individual App and Website Developer", url: "https://rajumahato.it.com" }],
+  creator: "Raju Mahato",
+  publisher: "Raju Mahato - Nepal's Best Individual App and Website Developer",
   metadataBase: new URL("https://birgunjcity.com"),
 
   openGraph: {

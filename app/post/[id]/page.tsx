@@ -25,6 +25,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       description: article.excerpt,
       images: article.imageUrl ? [article.imageUrl] : [],
       type: "article",
+      publishedTime: new Date(article.createdAt).toISOString(),
+      authors: [article.author],
+      section: article.category,
+      tags: article.tags || [],
+    },
+    other: {
+      "article:published_time": new Date(article.createdAt).toISOString(),
+      "article:author": article.author,
+      "article:section": article.category,
+      "news_keywords": (article.tags || []).join(", "),
     },
     twitter: {
       card: "summary_large_image",
@@ -99,8 +109,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         )}
 
         <FontSizeControl>
-          <p className="text-lg text-gray-700 font-medium mb-4 leading-relaxed">{article.excerpt}</p>
-          <div className="text-gray-800 leading-relaxed" dangerouslySetInnerHTML={{ __html: article.content }} />
+          <p className="text-lg text-gray-700 font-medium mb-4" style={{ lineHeight: "1.9" }}>{article.excerpt}</p>
+          <div className="text-gray-800 text-[17px]" style={{ lineHeight: "2" }} dangerouslySetInnerHTML={{ __html: article.content }} />
         </FontSizeControl>
 
         {inlineAds.length > 0 && (

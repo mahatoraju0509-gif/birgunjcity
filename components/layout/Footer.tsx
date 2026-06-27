@@ -1,5 +1,6 @@
 ﻿import Link from "next/link";
 import { CATEGORIES } from "@/types/article";
+import FooterLogo from "@/components/FooterLogo";
 
 export default function Footer() {
   return (
@@ -7,7 +8,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <h3 className="text-2xl font-extrabold mb-3">
-            BIRGUNJ<span className="text-brand-gold">CITY</span>.com
+            <FooterLogo />
           </h3>
           <p className="text-sm text-gray-300 leading-relaxed">
             बीरगंज र मध्धेश प्रदेशको भरपर्दो, विश्वसनीय र छिटो समाचार पोर्टल।
@@ -69,7 +70,7 @@ export default function Footer() {
           >
             Raju Mahato
           </a>
-          <span>— Nepal&apos;s Best &amp; Top Individual App and Web Developer</span>
+          <span>— Nepal&apos;s Best Individual App and Website Developer</span>
           <a
             href="https://wa.me/8109036694264"
             target="_blank"
