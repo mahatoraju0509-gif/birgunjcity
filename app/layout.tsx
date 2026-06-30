@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -12,11 +12,13 @@ export const metadata: Metadata = {
   creator: "Raju Mahato",
   publisher: "Raju Mahato - Nepal's Best Individual App and Website Developer",
   metadataBase: new URL("https://birgunjcity.com"),
+  alternates: { canonical: "https://birgunjcity.com/" },
 
   openGraph: {
     title: "BirgunjCity.com — बीरगंज र मध्धेश प्रदेशको ताजा समाचार",
     description: "बीरगंज र मध्धेश प्रदेशको भरपर्दो समाचार पोर्टल।",
     siteName: "BirgunjCity.com",
+    url: "https://birgunjcity.com/",
     locale: "ne_NP",
     type: "website",
   },
